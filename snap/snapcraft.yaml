@@ -1,0 +1,144 @@
+name: sosumi
+base: core18
+version: '0.666'
+summary: Download and install macOS in a VM
+description: |
+  Download and install macOS in a VM
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+    run-on: amd64
+
+apps:
+  sosumi:
+    environment:
+      LANG: "C.UTF-8"
+      LC_ALL: "C.UTF-8"
+      LD_LIBRARY_PATH: $SNAP/usr/lib/qemu:$SNAP/usr/lib/x86_64-linux-gnu/mesa:$SNAP/usr/lib/x86_64-linux-gnu/mesa-egl:$SNAP/usr/lib/x86_64-linux-gnu/dri:/var/lib/snapd/lib/gl/xorg:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$SNAP/usr/lib/x86_64-linux-gnu/ceph:$LD_LIBRARY_PATH
+      FONTCONFIG_PATH: $SNAP/etc/fonts/conf.d
+      FONTCONFIG_FILE: $SNAP_DATA/fonts.conf
+      GDK_PIXBUF_MODULE_FILE: $SNAP_DATA/.gdk-pixbuf-loaders.cache
+      XDG_DATA_DIRS: $SNAP/usr/share
+      XDG_CACHE_HOME: $SNAP_USER_DATA/.cache
+    command: desktop-launch $SNAP/bin/sosumi
+    plugs:
+      - home
+      - network
+      - network-bind
+      - kvm
+      - audio-record
+      - audio-playback
+      - network-control
+      - raw-usb
+      - x11
+      - opengl
+      - unity7
+      - wayland
+      - desktop
+
+parts:
+  sosumi:
+    stage-snaps:
+      - qemu-virgil/latest/edge # https://github.com/ogra1/qemu-virgil-snap
+    plugin: dump
+    source: snap/local
+    stage-packages:
+      - python3-requests  # needed to fetch-macos
+      - python3-click     # needed to fetch-macos
+      - yad               # to do dialogs
+      - dmg2img           # needed to convert mac dmg files
+      #- qemu-utils        # for qemu-img etc
+      #- qemu-system-x86
+      - freeglut3
+      - hicolor-icon-theme
+      - libegl1-mesa
+      - libglu1-mesa
+      - libgl1-mesa-glx
+      - libaio1
+      - libasn1-8-heimdal
+      - libasound2
+      - libasyncns0
+      - libatk1.0-0
+      - libatk-bridge2.0-0
+      - libatspi2.0-0
+      - libbluetooth3
+      - libboost-iostreams1.65.1
+      - libboost-random1.65.1
+      - libboost-thread1.65.1
+      - libbrlapi0.6
+      - libcairo2
+      - libcairo-gobject2
+      - libcurl3-gnutls
+      - libdatrie1
+      - libflac8
+      - libfontconfig1
+      - libgdk-pixbuf2.0-0
+      - libgraphite2-3
+      - libgssapi3-heimdal
+      - libgtk-3-0
+      - libharfbuzz0b
+      - libhcrypto4-heimdal
+      - libheimbase1-heimdal
+      - libheimntlm0-heimdal
+      - libhx509-5-heimdal
+      - libiscsi7
+      - libjpeg-turbo8
+      - libkrb5-26-heimdal
+      - libldap-2.4-2
+      - libnfs11
+      - libnspr4
+      - libnss3
+      - libnuma1
+      - libogg0
+      - libpango-1.0-0
+      - libpangocairo-1.0-0
+      - libpangoft2-1.0-0
+      - libpixman-1-0
+      - libpulse0
+      - librados2
+      - librbd1
+      - libroken18-heimdal
+      - librtmp1
+      - libglib2.0-0
+      - libsasl2-2
+      - libsdl2-2.0-0
+      - libsdl2-image-2.0-0
+      - libssh2-1
+      - libslang2
+      - libsnappy1v5
+      - libsndfile1
+      - libsndio6.1
+      - libthai0
+      - libusb-1.0-0
+      - libvdeplug2
+      - libvorbis0a
+      - libvorbisenc2
+      - libvte-2.91-0
+      - libwayland-cursor0
+      - libwayland-egl1-mesa
+      - libwebp6
+      - libwind0-heimdal
+      - libxcb-render0
+      - libxcb-shm0
+      - libxcomposite1
+      - libxcursor1
+      - libxen-4.9
+      - libxenstore3.0
+      - libxi6
+      - libxinerama1
+      - libxrandr2
+      - libxrender1
+      - libxss1
+      - seabios
+      - ttf-ubuntu-font-family
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin

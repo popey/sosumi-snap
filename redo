@@ -1,0 +1,9 @@
+#!/bin/bash
+
+snap remove sosumi --purge
+if snapcraft --use-lxd; then
+	if snap install sosumi_0.1_amd64.snap --dangerous; then
+		for PERM in kvm network-control raw-usb audio-playback audio-record; do sudo snap connect sosumi:${PERM}; done
+		snap run sosumi
+	fi
+fi
