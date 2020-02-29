@@ -10,6 +10,7 @@ OSK="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
     -cpu Penryn,vendor=GenuineIntel,kvm=on,+sse3,+sse4.2,+aes,+xsave,+avx,+xsaveopt,+xsavec,+xgetbv1,+avx2,+bmi2,+smep,+bmi1,+fma,+movbe,+invtsc \
     -device isa-applesmc,osk="$OSK" \
     -smbios type=2 \
+    -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 \
     -serial mon:stdio \
     -drive if=pflash,format=raw,readonly,file="$SNAP"/firmware/OVMF_CODE.fd \
     -drive if=pflash,format=raw,file="$SNAP_USER_COMMON"/firmware/OVMF_VARS-1024x768.fd \
