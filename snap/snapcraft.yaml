@@ -134,6 +134,7 @@ parts:
       - libxss1
       - seabios
       - ttf-ubuntu-font-family
+      - cpu-checker
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only
