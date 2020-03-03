@@ -4,14 +4,21 @@
 #export QEMU_AUDIO_DRV=pa
 #QEMU_AUDIO_DRV=pa
 
-echo "Checking for firmware files"
+echo "*** Checking for kvm interface connection"
+if snapctl is-connected kvm; then
+  echo "INFO: kvm interface is connected"
+else
+  echo "ERROR: kvm interface is not connected. Run 'sudo snap connect sosumi:kvm' then re-launch sosumi."
+fi
+
+echo "*** Checking for firmware files"
 if [ ! -f "$SNAP_USER_COMMON"/firmware/OVMF_VARS-1024x768.fd ]; then
 	mkdir "$SNAP_USER_COMMON"/firmware
 	cp -a "$SNAP"/firmware/OVMF_VARS-1024x768.fd "$SNAP_USER_COMMON"/firmware/
 	cp -a "$SNAP"/ESP.qcow2 "$SNAP_USER_COMMON"/
 fi
 
-echo "Checking for Base System files"
+echo "*** Checking for Base System files"
 if [ ! -f "$SNAP_USER_COMMON"/BaseSystem/BaseSystem.img ]; then
 	if python3 "$SNAP"/bin/fetch-macos.py -o "$SNAP_USER_COMMON"/BaseSystem "$@"; then
 		dmg2img "$SNAP_USER_COMMON"/BaseSystem/BaseSystem.dmg "$SNAP_USER_COMMON"/BaseSystem/BaseSystem.img
@@ -22,17 +29,17 @@ if [ ! -f "$SNAP_USER_COMMON"/BaseSystem/BaseSystem.img ]; then
 	fi
 fi	
 
-echo "Checking for disk image"
+echo "*** Checking for disk image"
 if [ ! -f "$SNAP_USER_COMMON"/macos.qcow2 ]; then
 	qemu-img create -f qcow2 "$SNAP_USER_COMMON"/macos.qcow2 64G
 fi
 
-echo "Checking for launch script"
+echo "*** Checking for launch script"
 if [ ! -f "$SNAP_USER_COMMON/launch" ]; then
     cp -a "$SNAP"/bin/launch "$SNAP_USER_COMMON"/launch
 fi
 
 
 #qemu-virgil -enable-kvm -m 512 -device virtio-vga,virgl=on -display sdl,gl=on \ -netdev user,id=ethernet.0,hostfwd=tcp::10022-:22 -device rtl8139,netdev=ethernet.0 \ -soundhw ac97 some.img
-echo "Launch!"
+echo "*** Launch!"
 exec "$SNAP_USER_COMMON"/launch
