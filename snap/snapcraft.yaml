@@ -23,7 +23,8 @@ apps:
       GDK_PIXBUF_MODULE_FILE: $SNAP_DATA/.gdk-pixbuf-loaders.cache
       XDG_DATA_DIRS: $SNAP/usr/share
       XDG_CACHE_HOME: $SNAP_USER_DATA/.cache
-    command: desktop-launch $SNAP/bin/sosumi
+    command: bin/sosumi
+    command-chain: [bin/desktop-launch]
     plugs:
       - home
       - network
@@ -33,6 +34,7 @@ apps:
       - audio-playback
       - network-control
       - raw-usb
+      - screen-inhibit-control
       - x11
       - opengl
       - unity7
