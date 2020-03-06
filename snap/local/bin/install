@@ -24,4 +24,5 @@ OSK="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
     -netdev user,id=net0 \
     -device vmxnet3,netdev=net0,id=net0 \
     -drive id=ESP,if=virtio,format=qcow2,file="$SNAP_USER_COMMON"/ESP.qcow2 \
+    -drive id=InstallMedia,format=raw,if=virtio,file="$SNAP_USER_COMMON"/BaseSystem/BaseSystem.img \
     -drive id=SystemDisk,if=virtio,file="$SNAP_USER_COMMON"/macos.qcow2 \

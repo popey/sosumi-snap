@@ -40,7 +40,23 @@ if [ ! -f "$SNAP_USER_COMMON/launch" ]; then
     cp -a "$SNAP"/bin/launch "$SNAP_USER_COMMON"/launch
 fi
 
+echo "*** Checking for install script"
+if [ ! -f "$SNAP_USER_COMMON/install" ]; then
+    cp -a "$SNAP"/bin/install "$SNAP_USER_COMMON"/install
+fi
 
-#qemu-virgil -enable-kvm -m 512 -device virtio-vga,virgl=on -display sdl,gl=on \ -netdev user,id=ethernet.0,hostfwd=tcp::10022-:22 -device rtl8139,netdev=ethernet.0 \ -soundhw ac97 some.img
-echo "*** Launch!"
-exec "$SNAP_USER_COMMON"/launch
+echo "*** Check if installer has been run"
+# Probably a better way to do this, but checking the size of the macos qcow is probably best.
+# If it's over an arbitrary size, we can guess the install finished
+# On my machine a basic qcow is 262192 bytes, but let's put a buffer of 2x that
+qcowfilesize=$(stat -c %s "$SNAP_USER_COMMON"/macos.qcow2)
+if [ $qcowfilesize -gt 524384 ]; then
+  echo "*** Looks like the install was done, launching"
+  echo "*** Launch!"
+  exec "$SNAP_USER_COMMON"/launch
+else
+  echo "*** Looks like the install hasn't been done yet, lets install"
+  echo "*** Install!"
+  exec "$SNAP_USER_COMMON"/install
+fi
+
