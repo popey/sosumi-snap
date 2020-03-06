@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=sosumi
 Exec=sosumi %U
-Terminal=true
+Terminal=false
 Type=Application
 Icon=${SNAP}/meta/gui/sosumi.png
 StartupWMClass=susumi
