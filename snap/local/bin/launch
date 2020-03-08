@@ -18,7 +18,7 @@ OSK="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
     -display sdl,gl=on \
     -L "$SNAP"/usr/share/seabios/ \
     -L "$SNAP"/usr/lib/ipxe/qemu/ \
-    -audiodev pa,id=pa,server="/run/user/$(id -u)/pulse/native" \
+    -audiodev pa,id=pa,out.mixing-engine=off,server="/run/user/$(id -u)/pulse/native" \
     -device ich9-intel-hda -device hda-output,audiodev=pa \
     -usb -device usb-kbd -device usb-mouse \
     -netdev user,id=net0 \
