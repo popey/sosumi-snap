@@ -4,13 +4,13 @@
 #export QEMU_AUDIO_DRV=pa
 #QEMU_AUDIO_DRV=pa
 
-echo "*** Checking for kvm interface connection"
-if snapctl is-connected kvm; then
-  echo "INFO: kvm interface is connected"
-else
-  echo "ERROR: kvm interface is not connected. Run 'sudo snap connect sosumi:kvm' then re-launch sosumi."
-  exit 1
-fi
+#echo "*** Checking for kvm interface connection"
+#if snapctl is-connected kvm; then
+#  echo "INFO: kvm interface is connected"
+#else
+#  echo "ERROR: kvm interface is not connected. Run 'sudo snap connect sosumi:kvm' then re-launch sosumi."
+#  exit 1
+#fi
 
 echo "*** Checking for firmware files"
 if [ ! -f "$SNAP_USER_COMMON"/firmware/OVMF_VARS-1024x768.fd ]; then
