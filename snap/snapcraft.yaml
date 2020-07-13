@@ -1,6 +1,7 @@
 name: sosumi
 base: core18
-assumes: 2.43
+assumes:
+        - snapd2.43
 version: '0.666'
 summary: Download and install macOS in a VM
 description: |
