@@ -7,7 +7,8 @@ env:
     - LC_ALL: C.UTF-8
     - LANG: C.UTF-8
     - SNAPCRAFT_ENABLE_SILENT_REPORT: y
-    - SNAPCRAFT_ENABLE_DEVELOPER_DEBUG: y
+    - SNAPCRAFT_ENABLE_DEVELOPER_DEBUG: n // else we get "The job exceeded the maximum log length, and has been terminated"
+    - SNAPCRAFT_BUILD_ENVIRONMENT: lxd
 
 addons:
   snaps:
@@ -20,12 +21,12 @@ addons:
       channel: stable
 
 script:
-  - sudo apt update
+  - sudo usermod --append --groups lxd $USER
   - sudo /snap/bin/lxd.migrate -yes
   - sudo /snap/bin/lxd waitready
   - sudo /snap/bin/lxd init --auto
   - mkdir -p "$TRAVIS_BUILD_DIR/snaps-cache"
-  - sudo snapcraft --use-lxd
+  - sg lxd -c snapcraft
 after_success:
   - cp *.snap "$(echo "$TRAVIS_REPO_SLUG" | sed -e 's|.*/\(.*\)|\1|')-pr$TRAVIS_PULL_REQUEST.snap"
   - timeout 180 /snap/bin/transfer "$(echo "$TRAVIS_REPO_SLUG" | sed -e 's|.*/\(.*\)|\1|')-pr$TRAVIS_PULL_REQUEST.snap"

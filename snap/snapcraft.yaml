@@ -1,7 +1,8 @@
 name: sosumi
 base: core18
-assumes: 2.43
-version: '0.666'
+assumes:
+        - snapd2.43
+version: '0.667'
 summary: Download and install macOS in a VM
 description: |
   Download and install macOS in a VM
@@ -41,6 +42,7 @@ apps:
       - unity7
       - wayland
       - desktop
+      - removable-media
 
 parts:
   sosumi:
@@ -81,6 +83,7 @@ parts:
       - libgdk-pixbuf2.0-0
       - libgraphite2-3
       - libgssapi3-heimdal
+      - libgstreamer-plugins-base1.0-0
       - libgtk-3-0
       - libharfbuzz0b
       - libhcrypto4-heimdal

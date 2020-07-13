@@ -49,7 +49,7 @@ echo "*** Check if installer has been run"
 # Probably a better way to do this, but checking the size of the macos qcow is probably best.
 # If it's over an arbitrary size, we can guess the install finished
 # On my machine a basic qcow is 262192 bytes, but let's put a buffer of 2x that
-qcowfilesize=$(stat -c %s "$SNAP_USER_COMMON"/macos.qcow2)
+qcowfilesize=$(stat -Lc %s "$SNAP_USER_COMMON"/macos.qcow2)
 if [ $qcowfilesize -gt 524384 ]; then
   echo "*** Looks like the install was done, launching"
   echo "*** Launch!"
